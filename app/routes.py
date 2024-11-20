@@ -1,17 +1,21 @@
-try:
-    from flask import render_template, request, redirect, url_for
-    from app import app
-except ImportError as e:
-    print(f"Ошибка импорта: {e}")
-
-posts = []
+from flask import render_template, request
+from app import app
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def form():
+    user_data = None
     if request.method == 'POST':
-        title = request.form.get('title')
-        content = request.form.get('content')
-        if title and content:
-            posts.append({'title': title, 'content': content})
-            return redirect(url_for('index'))
-    return render_template('blog.html', posts=posts)
+        name = request.form.get('name')
+        city = request.form.get('city')
+        hobby = request.form.get('hobby')
+        age = request.form.get('age')
+
+        user_data = {
+            'name': name,
+            'city': city,
+            'hobby': hobby,
+            'age': age
+        }
+
+    # Отображаем страницу с формой и текущими данными
+    return render_template('form.html', user_data=user_data)
